@@ -1,6 +1,9 @@
 @layout('layouts/main')
 @set('title', 'แก้ไขผลการเรียน')
+@set('isUser', isUser)
 
 @section('body')
-  <a href="/auth/google">Login</a>
+  <div id="app">
+    <submit-form-component :user='{{currentUser}}'>
+  </div>
 @endsection

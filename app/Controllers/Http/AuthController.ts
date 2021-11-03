@@ -1,84 +1,66 @@
 // import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import User from "App/Models/users"
+import User from "App/Models/users";
 
 class AuthController {
-
-  async redirectToProvider ({ally, params}) {
-      await ally.use(params.provider).redirect()
-      // return ally.use('github').redirect()
-
+  async redirectToProvider({ ally, params }) {
+    await ally.use(params.provider).redirect();
+    // return ally.use('github').redirect()
   }
 
-  async handleProviderCallback ({params, ally, auth, response}) {
-      const provider = params.provider
+  async handleProviderCallback({ params, ally, auth, response }) {
+    const provider = params.provider;
 
-      const google = ally.use(provider);
-      // return google;
-      /**
-       * User has explicitly denied the login request
-       */
-      if (google.accessDenied()) {
-        return "Access was denied";
+    const socialAuth = await ally.use(provider);
+    // return google;
+    /**
+     * User has explicitly denied the login request
+     */
+    if (socialAuth.accessDenied()) {
+      return "Access was denied";
+    }
+
+    /**
+     * Unable to verify the CSRF state
+     */
+    if (socialAuth.stateMisMatch()) {
+      return "Request expired. Retry again";
+    }
+
+    /**
+     * There was an unknown error during the redirect
+     */
+    if (socialAuth.hasError()) {
+      return socialAuth.getError();
+    }
+
+    /**
+     * Finally, access the user
+     */
+    const userData = await socialAuth.user();
+    const user = await User.firstOrCreate(
+      {
+        email: userData.email,
+      },
+      {
+        name: userData.name,
+        avatar: userData.avatarUrl,
+        username: userData.email,
+        email: userData.email,
+        provider: provider,
       }
-
-      /**
-       * Unable to verify the CSRF state
-       */
-      if (google.stateMisMatch()) {
-        return "Request expired. Retry again";
-      }
-
-      /**
-       * There was an unknown error during the redirect
-       */
-      if (google.hasError()) {
-        return google.getError();
-      }
-
-      /**
-       * Finally, access the user
-       */
-      const user = await google.user();
-      return user;
-
-
-
-      // return ally.use(params.provider).getUser()
-      // try {
-      //     const userData = await ally.use(params.provider).getUser()
-
-      //     const authUser = await User.query().where({
-      //         'provider': provider,
-      //         'provider_id': userData.getId()
-      //     }).first()
-      //     if (!(authUser === null)) {
-      //         await auth.loginViaId(authUser.id)
-      //         return response.redirect('/')
-      //     }
-
-      //     const user = new User()
-      //     // user.name = userData.getName()
-      //     // user.username = userData.getNickname()
-      //     user.email = userData.getEmail()
-      //     // user.provider_id = userData.getId()
-      //     // user.avatar = userData.getAvatar()
-      //     // user.provider = provider
-
-      //     await user.save()
-
-      //     await auth.loginViaId(user.id)
-      //     return response.redirect('/')
-      // } catch (e) {
-      //     console.log(e)
-      //     return e;
-      //     response.redirect('/auth/' + provider)
-      // }
+    );
+    await auth.use("web").login(user);
+    console.log("Login success!");
+    response.redirect().toRoute('service.fixGrade')
   }
 
-  async logout ({auth, response}) {
-      await auth.logout()
-      response.redirect('/')
+  async logout({ auth, response }) {
+    await auth.logout();
+    response.redirect("/");
+  }
 
+  async login({ response }) {
+    response.redirect("/auth/google");
   }
 }
-module.exports = AuthController
+module.exports = AuthController;

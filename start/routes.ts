@@ -34,41 +34,6 @@ Route.group(() => {
 }).prefix("/service");
 
 Route.get('/logout', 'AuthController.logout').as('logout')
+Route.get('/login', 'AuthController.login').as('login')
 Route.get('/auth/:provider', 'AuthController.redirectToProvider').as('social.login')
 Route.get('/authenticated/:provider', 'AuthController.handleProviderCallback').as('social.login.callback')
-
-
-// Route.get('/google/redirect', async ({ ally }) => {
-//   return ally.use('google').redirect()
-// })
-
-// Route.get("/google/callback", async ({ ally }) => {
-//   const google = ally.use("google");
-//   // return google;
-//   /**
-//    * User has explicitly denied the login request
-//    */
-//   if (google.accessDenied()) {
-//     return "Access was denied";
-//   }
-
-//   /**
-//    * Unable to verify the CSRF state
-//    */
-//   if (google.stateMisMatch()) {
-//     return "Request expired. Retry again";
-//   }
-
-//   /**
-//    * There was an unknown error during the redirect
-//    */
-//   if (google.hasError()) {
-//     return google.getError();
-//   }
-
-//   /**
-//    * Finally, access the user
-//    */
-//   const user = await google.user();
-//   return user;
-// });

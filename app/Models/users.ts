@@ -7,7 +7,19 @@ export default class users extends BaseModel {
   public id: number
 
   @column()
+  public name: string
+
+  @column()
+  public avatar: string
+
+  @column()
+  public username: string
+
+  @column()
   public email: string
+
+  @column()
+  public provider: string
 
   @column({ serializeAs: null })
   public password: string

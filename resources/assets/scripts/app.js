@@ -10,9 +10,19 @@ Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
 
-var app = new Vue({
+Vue.component('submit-form-component', require('./components/SubmitFormComponent.vue').default);
+
+const app = new Vue({
   el: '#app',
-  data: {
-    message: 'Hello Vue!'
+  data() {
+      return {
+
+      }
+  },
+  methods: {
+
+  },
+  mounted() {
+      console.log('gg')
   }
 })

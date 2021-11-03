@@ -1,31 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AdonisJS - A fully featured web framework for Node.js</title>
-  <link href="https://fonts.googleapis.com/css?family=Poppins:400,500&display=swap" rel="stylesheet">
-  <head>
-    <link rel="stylesheet" href='/styles/app.css')/>
-    <script src="/scripts/app.js')"></script>
-  </head>
-</head>
-<body>
+@layout('layouts/main')
+@set('title', 'หน้าแรก')
 
-  <main>
+@section('body')
+  <div class="container pl-3 pr-3 pt-3 pb-3">
     <div>
-      <h1 class="title">Web service</h1>
-      <h2>Phukhieo school</h2>
-      <p class="subtitle">
-        Congratulations.
-      </p>
-      <h3>เลือกเมนู</h3>
-      <ul>
-        <li>
-          <a href="{{ route('service.fixGrade') }}">บันทึกการแก้ไขผลการเรียน</a>
-        </li>
-      </ul>
     </div>
-  </main>
-</body>
-</html>
+    <div class="text-center">
+      <h1>ระบบแก้ไขผลการเรียนของนักเรียนโรงเรียนภูเขียว</h1>
+      <a href="{{ route('service.fixGrade')}}" class="btn btn-outline-dark btn-lg">บันทึกการแก้ไขผลการเรียน</a>
+    </div>
+  </div>
+@endsection
