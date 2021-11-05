@@ -2198,7 +2198,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       info: "",
-      formURL: ""
+      formURL: "",
+      isTeacher: false
     };
   },
   methods: {},
@@ -2210,6 +2211,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (res.includes(vm.user.email)) {
         vm.formURL = "https://docs.google.com/forms/d/e/1FAIpQLSePYL6e2KkIRwLwZt0NE6q77n1ID-M8XP-GqacIfUKCAUhqAw/viewform?usp=pp_url&embedded=true&entry.1783085868=" + vm.user.email;
+        vm.isTeacher = true;
       } else {
         alert("กรุณาเข้าสู่ระบบใหม่ด้วย email ของครูโรงเรียนภูเขียว");
         window.location.href = "/logout";
@@ -48611,22 +48613,21 @@ var render = function () {
       ),
     ]),
     _vm._v(" "),
-    _c("div", [
-      _c(
-        "iframe",
-        {
-          attrs: {
-            src: _vm.formURL,
-            width: "100%",
-            height: "2100",
-            frameborder: "0",
-            marginheight: "0",
-            marginwidth: "0",
-          },
-        },
-        [_vm._v("Loading…")]
-      ),
-    ]),
+    _vm.isTeacher
+      ? _c("div", [
+          _c("embed", {
+            attrs: {
+              src: _vm.formURL,
+              width: "100%",
+              height: "2500",
+              frameborder: "0",
+              marginheight: "0",
+              marginwidth: "0",
+            },
+          }),
+          _vm._v("Loading…"),
+        ])
+      : _vm._e(),
   ])
 }
 var staticRenderFns = []

@@ -17,15 +17,15 @@
         </div>
       </div>
     </div>
-    <div>
-      <iframe
+    <div v-if="isTeacher">
+      <embed
         v-bind:src="formURL"
         width="100%"
-        height="2100"
+        height="2500"
         frameborder="0"
         marginheight="0"
         marginwidth="0"
-        >Loading…</iframe
+        >Loading…</embed
       >
     </div>
   </div>
@@ -39,6 +39,7 @@ export default {
     return {
       info: "",
       formURL: "",
+      isTeacher: false
     };
   },
   methods: {},
@@ -55,6 +56,7 @@ export default {
           vm.formURL =
             "https://docs.google.com/forms/d/e/1FAIpQLSePYL6e2KkIRwLwZt0NE6q77n1ID-M8XP-GqacIfUKCAUhqAw/viewform?usp=pp_url&embedded=true&entry.1783085868=" +
             vm.user.email;
+          vm.isTeacher = true;
         } else {
           alert("กรุณาเข้าสู่ระบบใหม่ด้วย email ของครูโรงเรียนภูเขียว");
           window.location.href = "/logout";
